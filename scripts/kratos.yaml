@@ -1,0 +1,74 @@
+version: v0.7.6
+
+identity:
+  default_schema_url: file://home/ory/kratos.identity.schema.json
+
+dsn: postgres://postgres:CHANGE_PASSWORD@pg:5432/kratos
+
+serve:
+  public:
+    port: 4000
+    base_url: http://127.0.0.1:4000
+    cors:
+      enabled: true
+  admin:
+    port: 4001
+    base_url: http://127.0.0.1:4001
+
+selfservice:
+  default_browser_return_url: http://127.0.0.1:4002
+  whitelisted_return_urls:
+    - http://127.0.0.1:4002
+  methods:
+    password:
+      enabled: true
+    link:
+      enabled: true
+  flows:
+    registration:
+      ui_url: http://127.0.0.1:4002/signup
+      lifespan: 10m
+    login:
+      ui_url: http://127.0.0.1:4002/login
+      lifespan: 10m
+    logout:
+      after:
+        default_browser_return_url: http://127.0.0.1:4002/login
+    verification:
+      enabled: true
+      ui_url: http://127.0.0.1:4002/verify
+      after:
+        default_browser_return_url: http://127.0.0.1:4002
+    recovery:
+      enabled: true
+      ui_url: http://127.0.0.1:4002/recovery
+    settings:
+      ui_url: http://127.0.0.1:4002/settings
+      privileged_session_max_age: 15m
+    error:
+      ui_url: http://127.0.0.1:4002/error
+
+secrets:
+  cookie:
+    - CHANGE-ME
+  default:
+    - CHANGE-ME
+
+hashers:
+  argon2:
+    parallelism: 1
+    memory: 128MB
+    iterations: 1
+    salt_length: 16
+    key_length: 32
+
+courier:
+  smtp:
+    connection_uri: smtp://localhost:2500
+
+log:
+  level: info
+  format: text
+  leak_sensitive_values: true
+
+sqa-opt-out: true
