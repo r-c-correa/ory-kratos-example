@@ -2,7 +2,6 @@ package web
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -13,6 +12,7 @@ type FlowType int
 const (
 	FlowLogin FlowType = iota + 1
 	FlowSignup
+	FlowSettings
 )
 
 var ErrInvalidFlowType = errors.New("flow type is invalid")
@@ -24,6 +24,8 @@ func IsValidFlow(c *gin.Context, flowType FlowType) (bool, gin.H, error) {
 		flowTypeS = "login"
 	case FlowSignup:
 		flowTypeS = "registration"
+	case FlowSettings:
+		flowTypeS = "settings"
 	default:
 		return false, gin.H{}, ErrInvalidFlowType
 	}
@@ -41,25 +43,23 @@ func IsValidFlow(c *gin.Context, flowType FlowType) (bool, gin.H, error) {
 	}
 
 	data := gin.H{}
+	var flow interface{}
+	var err error
 
 	switch flowType {
 	case FlowLogin:
-		flow, _, err := KratosPublicClient.V0alpha1Api.GetSelfServiceLoginFlow(c.Request.Context()).Id(flowID).Cookie(cookie).Execute()
-		if err != nil {
-			c.AbortWithError(http.StatusInternalServerError, err)
-			return false, data, err
-		}
-		data["flow"] = flow
-
-		fmt.Println(flow.Ui.Messages)
+		flow, _, err = KratosPublicClient.V0alpha1Api.GetSelfServiceLoginFlow(c.Request.Context()).Id(flowID).Cookie(cookie).Execute()
 	case FlowSignup:
-		flow, _, err := KratosPublicClient.V0alpha1Api.GetSelfServiceRegistrationFlow(c.Request.Context()).Id(flowID).Cookie(cookie).Execute()
-		if err != nil {
-			c.AbortWithError(http.StatusInternalServerError, err)
-			return false, data, err
-		}
-		data["flow"] = flow
+		flow, _, err = KratosPublicClient.V0alpha1Api.GetSelfServiceRegistrationFlow(c.Request.Context()).Id(flowID).Cookie(cookie).Execute()
+	case FlowSettings:
+		flow, _, err = KratosPublicClient.V0alpha1Api.GetSelfServiceSettingsFlow(c.Request.Context()).Id(flowID).Cookie(cookie).Execute()
 	}
+
+	if err != nil {
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return false, data, err
+	}
+	data["flow"] = flow
 
 	if logoutURL := LogoutURL(c, cookie); logoutURL != "" {
 		data["logout_url"] = logoutURL

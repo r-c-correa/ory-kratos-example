@@ -33,6 +33,7 @@
         <div class="btn-group nav justify-content-center" role="group" aria-label="Basic example">
             <a class="btn btn-outline-dark" href="/">Home</a>
             {{ if .logout_url }}
+                <a class="btn btn-outline-dark" href="/settings">Settings</a>
                 <a class="btn btn-outline-dark" href="{{ .logout_url }}">Logout</a>
             {{ else }}
                 <a class="btn btn-outline-dark" href="/signup">Signup</a>

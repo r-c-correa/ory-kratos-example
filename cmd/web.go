@@ -18,6 +18,8 @@ var webCommand = &cobra.Command{
 		r.GET("/signup", web.Signup)
 		r.GET("/signup/", web.Signup)
 		r.GET("/login", web.Login)
+		r.GET("/settings", web.Settings)
+		r.GET("/settings/", web.Settings)
 		return r.Run(":4002")
 	},
 }
