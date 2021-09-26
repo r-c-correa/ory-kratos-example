@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+    {{ template "head_page.gohtml" .}}
+
+    <body>
+        <div class="container">
+            {{ template "head_body.gohtml" .}}
+
+            <div class="row">
+                <div class="col">
+
+                </div>
+
+                <div class="col">
+                    <form action="{{.flow.Ui.Action}}" method="{{.flow.Ui.Method}}" class="needs-validation">
+                        <p>{{ template "message_error.gohtml" .flow.Ui.Messages }}</p>
+                        
+                        <div>
+                            {{ range .flow.Ui.Nodes }}
+                                <div class="row">
+                                    {{ $title := .Attributes.UiNodeInputAttributes.Name }}
+                                    {{ if .Meta.Label }}
+                                        {{ if .Meta.Label.Text }}
+                                            {{ $title = .Meta.Label.Text }}
+                                        {{ end }}
+                                    {{ end }}
+                                    
+                                    {{ if eq .Type "input" }}
+                                        {{ if eq .Attributes.UiNodeInputAttributes.Type "hidden" }}
+                                            <input type="hidden" name="{{ .Attributes.UiNodeInputAttributes.Name }}" value="{{ if .Attributes.UiNodeInputAttributes.Value }}{{ .Attributes.UiNodeInputAttributes.Value }}{{ end }}"/>
+                                        {{ else if eq .Attributes.UiNodeInputAttributes.Type "password" }}
+                                            <div class="mb-3">
+                                                <label for="{{ .Attributes.UiNodeInputAttributes.Name }}-input" class="form-label">{{ $title }}:</label>
+                                                <input
+                                                    class="form-control {{ if .Messages }}is-invalid{{ end }}"
+                                                    type="{{ .Attributes.UiNodeInputAttributes.Type }}"
+                                                    placeholder="{{ $title }}"
+                                                    id="{{ .Attributes.UiNodeInputAttributes.Name }}-input"
+                                                    name="{{ .Attributes.UiNodeInputAttributes.Name }}"
+                                                    value="{{ if .Attributes.UiNodeInputAttributes.Value }}{{ .Attributes.UiNodeInputAttributes.Value }}{{ end }}">
+
+                                                {{ template "message_error.gohtml" .Messages }}
+                                            </div>
+                                        {{ else if eq .Attributes.UiNodeInputAttributes.Type "checkbox" }}
+                                            <label class="mb-3">
+                                                <input type="hidden" name="{{ .Attributes.UiNodeInputAttributes.Name }}" value="{{ if .Attributes.UiNodeInputAttributes.Value }}{{ .Attributes.UiNodeInputAttributes.Value }}{{ end }}"/>
+
+                                                <input
+                                                    type="{{ .Attributes.UiNodeInputAttributes.Type }}"
+                                                    name="{{ .Attributes.UiNodeInputAttributes.Name }}"
+                                                    value="true"
+                                                    placeholder="{{ $title }}"
+                                                    {{ if .Attributes.UiNodeInputAttributes.Value }}checked{{ end }}
+                                                    {{ if .Attributes.UiNodeInputAttributes.Disabled }}disabled{{ end }}
+                                                />
+
+                                                <span>{{ $title }}</span>
+
+                                                {{ template "message_error.gohtml" .Messages }}
+                                            </label>
+                                        {{ else if eq .Attributes.UiNodeInputAttributes.Type "submit" }}
+                                            <div class="mb-3">
+                                                <button 
+                                                    type="{{ .Attributes.UiNodeInputAttributes.Type }}"
+                                                    name="{{ .Attributes.UiNodeInputAttributes.Name }}"
+                                                    value="{{ if .Attributes.UiNodeInputAttributes.Value }}{{ .Attributes.UiNodeInputAttributes.Value }}{{ end }}"
+                                                    class="btn btn-outline-success"
+                                                    {{ if .Attributes.UiNodeInputAttributes.Disabled }}disabled{{ end }}>
+                                                    Login
+                                                </button>
+                                            </div>
+                                        {{ else }}
+                                            <div class="mb-3">
+                                                <label for="{{ .Attributes.UiNodeInputAttributes.Name }}-input" class="form-label">{{ $title }}:</label>
+                                                <input
+                                                    class="form-control {{ if .Messages }}is-invalid{{ end }}"
+                                                    type="{{ .Attributes.UiNodeInputAttributes.Type }}"
+                                                    placeholder="{{ $title }}"
+                                                    id="{{ .Attributes.UiNodeInputAttributes.Name }}-input"
+                                                    name="{{ .Attributes.UiNodeInputAttributes.Name }}"
+                                                    value="{{ if .Attributes.UiNodeInputAttributes.Value }}{{ .Attributes.UiNodeInputAttributes.Value }}{{ end }}"
+                                                    {{ if .Attributes.UiNodeInputAttributes.Disabled }}disabled{{ end }}>
+                                                {{ template "message_error.gohtml" .Messages }}
+                                            </div>
+                                        {{ end }}
+                                    {{ end }}
+                                </div>
+                            {{ end }}
+                        </div>
+                    </form>
+                </div>
+
+                <div class="col">
+
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+    </body>
+</html>

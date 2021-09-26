@@ -50,9 +50,9 @@ selfservice:
 
 secrets:
   cookie:
-    - CHANGE-ME
+    - CHANGE-ME-CHANGE-ME
   default:
-    - CHANGE-ME
+    - CHANGE-ME-CHANGE-ME
 
 hashers:
   argon2:

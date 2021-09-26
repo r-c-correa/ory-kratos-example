@@ -17,6 +17,7 @@ var webCommand = &cobra.Command{
 		r.GET("/", web.Home)
 		r.GET("/signup", web.Signup)
 		r.GET("/signup/", web.Signup)
+		r.GET("/login", web.Login)
 		return r.Run(":4002")
 	},
 }

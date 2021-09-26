@@ -7,7 +7,7 @@ import (
 )
 
 func Signup(c *gin.Context) {
-	isValidFlow, dataFlow := IsValidFlow(c)
+	isValidFlow, dataFlow, _ := IsValidFlow(c, FlowSignup)
 	if !isValidFlow {
 		return
 	}
