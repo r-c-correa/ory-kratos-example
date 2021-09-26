@@ -11,7 +11,7 @@ type FlowType int
 
 const (
 	FlowLogin FlowType = iota + 1
-	FlowSignup
+	FlowRegistration
 	FlowSettings
 )
 
@@ -22,7 +22,7 @@ func IsValidFlow(c *gin.Context, flowType FlowType) (bool, gin.H, error) {
 	switch flowType {
 	case FlowLogin:
 		flowTypeS = "login"
-	case FlowSignup:
+	case FlowRegistration:
 		flowTypeS = "registration"
 	case FlowSettings:
 		flowTypeS = "settings"
@@ -49,7 +49,7 @@ func IsValidFlow(c *gin.Context, flowType FlowType) (bool, gin.H, error) {
 	switch flowType {
 	case FlowLogin:
 		flow, _, err = KratosPublicClient.V0alpha1Api.GetSelfServiceLoginFlow(c.Request.Context()).Id(flowID).Cookie(cookie).Execute()
-	case FlowSignup:
+	case FlowRegistration:
 		flow, _, err = KratosPublicClient.V0alpha1Api.GetSelfServiceRegistrationFlow(c.Request.Context()).Id(flowID).Cookie(cookie).Execute()
 	case FlowSettings:
 		flow, _, err = KratosPublicClient.V0alpha1Api.GetSelfServiceSettingsFlow(c.Request.Context()).Id(flowID).Cookie(cookie).Execute()
